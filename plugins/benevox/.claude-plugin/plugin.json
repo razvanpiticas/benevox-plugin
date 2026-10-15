@@ -1,6 +1,6 @@
 {
   "name": "benevox",
-  "version": "0.1.0+f7573af24ac7",
+  "version": "0.1.0+3467bdd587b3",
   "description": "Drives the Benevox MCP server — project data, tenant-scoped, under the caller's own permissions.",
   "author": {
     "name": "Benevox"

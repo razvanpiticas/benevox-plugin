@@ -1,7 +1,7 @@
 ---
 name: benevox
 description: Connects to and drives the Benevox MCP server at mcp.benevox.dev — the product's own data, tenant-scoped, under the caller's own permissions. Use when working with Benevox data, when a Benevox tool refuses a call, or when connecting a harness to the Benevox server.
-allowed-tools: mcp__benevox__server_info, mcp__benevox__list_items, mcp__benevox__create_item, mcp__benevox__ads_health, mcp__benevox__growth_health, mcp__benevox__publishing_health, mcp__benevox__seo_health, mcp__benevox__studio_health
+allowed-tools: mcp__benevox__server_info, mcp__benevox__list_items, mcp__benevox__create_item, mcp__benevox__demonstrate_refusal, mcp__benevox__ads_health, mcp__benevox__growth_health, mcp__benevox__publishing_health, mcp__benevox__seo_health, mcp__benevox__studio_health
 ---
 
 # Benevox
@@ -47,7 +47,7 @@ Every call is also tenant-scoped from the caller's token. A caller who belongs t
 
 | Tool | One line |
 | --- | --- |
-| `server_info` | What this deployment is and what it can reach. Touches nothing else |
+| `server_info` | Which deployment answered, its route and the tools it publishes. Touches nothing else |
 | `list_items` | Reads the item list |
 | `create_item` | Adds one item |
 | `ads_health` | Proves this server can reach Ads and be accepted by it |

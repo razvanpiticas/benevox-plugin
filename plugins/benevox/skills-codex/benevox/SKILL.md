@@ -46,7 +46,7 @@ Every call is also tenant-scoped from the caller's token. A caller who belongs t
 
 | Tool | One line |
 | --- | --- |
-| `server_info` | What this deployment is and what it can reach. Touches nothing else |
+| `server_info` | Which deployment answered, its route and the tools it publishes. Touches nothing else |
 | `list_items` | Reads the item list |
 | `create_item` | Adds one item |
 | `ads_health` | Proves this server can reach Ads and be accepted by it |
