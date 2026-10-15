@@ -1,0 +1,14 @@
+{
+  "provider": "opencode",
+  "displayName": "OpenCode",
+  "skillPaths": [
+    ".opencode/skills/benevox",
+    ".opencode/skills/benevox-update"
+  ],
+  "mcp": {
+    "sourcePath": "opencode.json",
+    "targetPath": "opencode.json",
+    "scope": "project",
+    "pinning": "dynamic-registration"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "provider": "gemini",
+  "displayName": "Gemini CLI",
+  "skillPaths": [
+    ".gemini/skills/benevox",
+    ".gemini/skills/benevox-update"
+  ],
+  "mcp": {
+    "sourcePath": ".gemini/settings.json",
+    "targetPath": ".gemini/settings.json",
+    "scope": "project",
+    "pinning": "dynamic-registration"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "benevox": {
+      "httpUrl": "https://mcp.benevox.dev/mcp"
+    }
+  }
+}

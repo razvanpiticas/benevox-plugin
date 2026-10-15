@@ -1,0 +1,15 @@
+{
+  "name": "benevox-plugins",
+  "description": "The Benevox agent plugin: skills and the Benevox MCP server.",
+  "owner": {
+    "name": "Benevox"
+  },
+  "plugins": [
+    {
+      "name": "benevox",
+      "description": "Drives the Benevox MCP server — project data, tenant-scoped, under the caller's own permissions.",
+      "source": "./plugins/benevox",
+      "category": "productivity"
+    }
+  ]
+}

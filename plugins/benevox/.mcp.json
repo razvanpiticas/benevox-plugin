@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "benevox": {
+      "type": "http",
+      "url": "https://mcp.benevox.dev/mcp",
+      "oauth": {
+        "clientId": "benevox-public-client",
+        "callbackPort": 8125
+      }
+    }
+  }
+}

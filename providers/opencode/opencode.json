@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "benevox": {
+      "type": "remote",
+      "url": "https://mcp.benevox.dev/mcp",
+      "enabled": true
+    }
+  }
+}

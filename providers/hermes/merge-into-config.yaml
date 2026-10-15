@@ -1,0 +1,4 @@
+mcp_servers:
+  benevox:
+    url: https://mcp.benevox.dev/mcp
+    transport: streamable-http
