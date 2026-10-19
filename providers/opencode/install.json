@@ -3,6 +3,14 @@
   "displayName": "OpenCode",
   "skillPaths": [
     ".opencode/skills/benevox",
+    ".opencode/skills/benevox-agent",
+    ".opencode/skills/benevox-distiller",
+    ".opencode/skills/benevox-inbox",
+    ".opencode/skills/benevox-linker",
+    ".opencode/skills/benevox-niche",
+    ".opencode/skills/benevox-routines",
+    ".opencode/skills/benevox-search",
+    ".opencode/skills/benevox-studio",
     ".opencode/skills/benevox-update"
   ],
   "mcp": {

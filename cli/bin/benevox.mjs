@@ -6,17 +6,23 @@ import { fileURLToPath } from "node:url"
 
 import { DETECTABLE_PROVIDER_IDS, detectHarnesses } from "../lib/detect-harness.mjs"
 import { installTree } from "../lib/install-tree.mjs"
+import { HARNESSES, SCHEDULE_COMMAND, runSchedule } from "../lib/schedule.mjs"
 
 const INSTALL_COMMAND = "install"
 const FROM_ARGUMENT = "--from"
 const HARNESS_ARGUMENT = "--harness"
 const DYNAMIC_REGISTRATION = "dynamic-registration"
 
-const USAGE = `benevox install — installs the Benevox skill and MCP server into this project.
+const USAGE = `benevox — installs the Benevox skills and MCP server, and schedules a channel's routines.
 
   benevox install                       install for every harness detected on this machine
   benevox install --harness cursor      install for one harness
   benevox install --from <dir>          install from a local build instead of the published trees
+
+  benevox schedule add --harness <${Object.keys(HARNESSES).join("|")}> --routine <id> --name "<name>" \\
+      --cron "<m h dom mon dow>" --zone "<IANA zone>" --project-dir "<path>" --prompt "<text>"
+  benevox schedule remove --routine <id>
+  benevox schedule list [--project-dir "<path>"]
 
 Harnesses: ${DETECTABLE_PROVIDER_IDS.join(", ")}
 Claude Code and Codex install from the plugin marketplace instead:
@@ -25,6 +31,11 @@ Claude Code and Codex install from the plugin marketplace instead:
 
 const main = () => {
   const argv = process.argv.slice(2)
+
+  if (argv[0] === SCHEDULE_COMMAND) {
+    runSchedule(argv.slice(1))
+    return
+  }
 
   if (argv[0] !== INSTALL_COMMAND) {
     console.log(USAGE)

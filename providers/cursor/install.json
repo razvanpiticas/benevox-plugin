@@ -3,6 +3,14 @@
   "displayName": "Cursor",
   "skillPaths": [
     ".cursor/skills/benevox",
+    ".cursor/skills/benevox-agent",
+    ".cursor/skills/benevox-distiller",
+    ".cursor/skills/benevox-inbox",
+    ".cursor/skills/benevox-linker",
+    ".cursor/skills/benevox-niche",
+    ".cursor/skills/benevox-routines",
+    ".cursor/skills/benevox-search",
+    ".cursor/skills/benevox-studio",
     ".cursor/skills/benevox-update"
   ],
   "mcp": {

@@ -3,6 +3,14 @@
   "displayName": "Hermes",
   "skillPaths": [
     ".hermes/skills/benevox",
+    ".hermes/skills/benevox-agent",
+    ".hermes/skills/benevox-distiller",
+    ".hermes/skills/benevox-inbox",
+    ".hermes/skills/benevox-linker",
+    ".hermes/skills/benevox-niche",
+    ".hermes/skills/benevox-routines",
+    ".hermes/skills/benevox-search",
+    ".hermes/skills/benevox-studio",
     ".hermes/skills/benevox-update"
   ],
   "mcp": {

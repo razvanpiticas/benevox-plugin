@@ -3,6 +3,14 @@
   "displayName": "OpenClaw",
   "skillPaths": [
     ".agents/skills/benevox",
+    ".agents/skills/benevox-agent",
+    ".agents/skills/benevox-distiller",
+    ".agents/skills/benevox-inbox",
+    ".agents/skills/benevox-linker",
+    ".agents/skills/benevox-niche",
+    ".agents/skills/benevox-routines",
+    ".agents/skills/benevox-search",
+    ".agents/skills/benevox-studio",
     ".agents/skills/benevox-update"
   ],
   "mcp": {

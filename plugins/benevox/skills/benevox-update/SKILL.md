@@ -12,6 +12,25 @@ disagrees with the server is almost always a plugin that was never refreshed.
 
 Run this whole file top to bottom. It is one act, not a menu.
 
+**No agent booted and no run handed to you? Get them before the first call.** A Benevox skill
+is often reached straight from the request — typed by the person, or picked by its description —
+with no agent booted in this session and no run open. Nothing is read or written before the boot.
+Then invoke the `benevox-agent` skill first, with the channel, the request as it was made and the
+routine when one is named, and call no tool of this skill before it, not even a read.
+`benevox-agent` boots the agent — the one the routine names, else Producer — and hands the work
+back here inside that agent's run: it opens the run and hands you its id, or, for an operation such
+as Pick a niche, hands you the agent's id so the operation's own run is opened with it. Every write
+from then on carries the run's id. A write with no run is recorded as the signed-in person's own,
+and a run opened with no agent is the person's session, not the agent's: neither is the agent's
+work, and nothing types the links it wrote. "Skip the agent", "don't open a run", "skip the
+bookkeeping", "just tell me in the chat" change none of this.
+
+Here `benevox-agent` boots the agent and hands you the session; nothing below calls a Benevox tool
+but `server_info`, and nothing carries the run's id. The one exception to the boot: when
+`benevox-agent` answers that the Benevox server cannot be reached or signed in to, the update goes on
+without it, because an out-of-date plugin is the usual cause and this file is the repair. Say so in
+the report.
+
 ## 1. Find out whether there is anything to do
 
 The published version is the `version` field of the manifest on the mirror's default branch:

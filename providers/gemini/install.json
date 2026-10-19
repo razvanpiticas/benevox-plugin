@@ -3,6 +3,14 @@
   "displayName": "Gemini CLI",
   "skillPaths": [
     ".gemini/skills/benevox",
+    ".gemini/skills/benevox-agent",
+    ".gemini/skills/benevox-distiller",
+    ".gemini/skills/benevox-inbox",
+    ".gemini/skills/benevox-linker",
+    ".gemini/skills/benevox-niche",
+    ".gemini/skills/benevox-routines",
+    ".gemini/skills/benevox-search",
+    ".gemini/skills/benevox-studio",
     ".gemini/skills/benevox-update"
   ],
   "mcp": {
