@@ -98,13 +98,21 @@ keywords, channel ids, or both." — and the criteria: max and min subscribers, 
 views-to-subscribers, min multiple of the channel's average views, published within so many days or
 after a date, format (`LongForm`, `Short`, `Any`), duration bounds, results per keyword (default 50,
 at most 200). It answers each passing video — its library id, its outlier observation, title,
-channel, subscribers, views, age, duration, the two ratios, and the keyword that found it — a count
-rejected per criterion, and the pages read per keyword. Bounds are inclusive.
+channel, subscribers, views, age, duration, the two ratios, the keyword that found it, and
+`factsReadFrom`, the source that read its facts (`Website` or `DataApi`) — a count rejected per
+criterion, the pages read per keyword, `factSource` (the platform's setting: `Website`, `DataApi`,
+`DataApiThenWebsite` or `WebsiteThenDataApi`) and `fallbackUsed` (whether the setting's second source
+read any of it). Keyword search always reads the YouTube website. Bounds are inclusive.
 
 It is not idempotent: each call reads YouTube again. When YouTube refuses — a bot check, a 403 or
-429, a page it cannot read — it answers "YouTube refused the search. Nothing was written; try again
-in a few minutes." Nothing reached the library; retrying a few minutes later is worth it, retrying
-at once is not.
+429, the Data API's daily quota spent — it answers "YouTube refused the search. Nothing was written;
+try again in a few minutes." Nothing reached the library; retrying a few minutes later is worth it,
+retrying at once is not.
+
+When YouTube answers in a shape Studio cannot read, it answers UPSTREAM_UNAVAILABLE with Studio's
+sentence naming the source and the call, such as "The YouTube Data API's videos answer for … is not
+in the shape Studio reads: …. Nothing was written." Do not retry: the same call fails the same way
+until Studio is updated. Tell the person what it said; nothing reached the library.
 
 ## Runs, as this skill sees them
 

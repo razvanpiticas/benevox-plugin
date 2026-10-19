@@ -125,9 +125,18 @@ Making a draft current is the founder's, on the channel screen. No tool does it.
 | --- | --- | --- |
 | `search_youtube_videos` | **Yes** — writes every video it read into the library | keywords, channel ids, or both, and the criteria: subscribers, views, views-to-subscribers, multiple of the channel's average, published window, format, duration, results per keyword (at most 200) |
 
-Not idempotent and open-world: it reads YouTube. When YouTube answers with a bot check it answers
+Not idempotent and open-world: it reads YouTube. Each passing video carries `factsReadFrom`, the
+source that read its facts (`Website` or `DataApi`); the answer carries `factSource`, the platform's
+setting (`Website`, `DataApi`, `DataApiThenWebsite` or `WebsiteThenDataApi`), and `fallbackUsed`.
+Keyword search always reads the YouTube website.
+
+When YouTube refuses — a bot check, the Data API's daily quota spent — it answers
 UPSTREAM_UNAVAILABLE, "YouTube refused the search. Nothing was written; try again in a few
-minutes."
+minutes." Retry a few minutes later, not at once.
+
+When YouTube answers in a shape Studio cannot read, it also answers UPSTREAM_UNAVAILABLE, with
+Studio's sentence naming the source and the call and ending "Nothing was written." Do not retry:
+it fails the same way until Studio is updated. Tell the person.
 
 ## The second enforcement point
 

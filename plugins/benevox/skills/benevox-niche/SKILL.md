@@ -112,6 +112,14 @@ the operation's `min-demand-channels` or more; read the number from `get_operati
 a few minutes." Say so, `observe_run` it, and either wait a few minutes and send it once more or
 pause the run with the demand test as `Next:`.
 
+**A search whose answer changed** answers UPSTREAM_UNAVAILABLE with Studio's sentence naming the
+source and the call, ending "is not in the shape Studio reads: …. Nothing was written." Do not send
+it again: it fails the same way until Studio is updated. Tell the founder the sentence,
+`observe_run` it, and pause the run with the demand test as `Next:`.
+
+Each passing video says which source read its facts (`factsReadFrom`); the answer names the
+platform's setting (`factSource`) and whether its fallback was used (`fallbackUsed`).
+
 ## Resuming
 
 A resumable run in the operation, or the founder says "continue the niche": `get_run` on it and
