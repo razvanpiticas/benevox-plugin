@@ -65,8 +65,8 @@ Handed to `benevox-agent` for the run's summary. In this order, plain lines, cou
 - what the pass could not read: a refusal, a run it could not open, a subject it could not resolve.
 
 The summary also carries `Next:`, and one `Waiting:` line per proposal — "Waiting: founder applies
-or rejects the Demand test proposal on Studio → Insights" — and per escalation, so the next boot
-names them. The run is ended, never paused; when a routine fired it, Studio files the headline and
+or rejects the Potential niches shortlist proposal on Studio → Insights" — and per escalation, so
+the next boot names them. The run is ended, never paused; when a routine fired it, Studio files the headline and
 this summary in the founder's inbox as the run's report.
 
 No recommendation the founder did not ask for, and no insight of the pass's own.

@@ -5,7 +5,8 @@ description: "Find what we decided or know — finds what was decided or is know
 
 # Benevox search
 
-Reads of a row Studio already named are `benevox-studio`'s: a niche by its id, a run by its id.
+Reads of a row Studio already named are `benevox-studio`'s: a niche by its id, a watch channel by
+its id, a run by its id.
 This skill is for every other read — the ones where nobody holds the row, or holds one and wants
 what is tied to it. It chooses the instrument, runs it once, and answers with the rows found and the
 query it ran, so the founder and the calling skill can see what was asked. It writes nothing.
@@ -34,8 +35,8 @@ you the question. You write nothing, so no call of yours carries the run's id.
 Every question, whoever asks it, goes through these four steps in this order.
 
 1. **Read the glossary — first, before any instrument is chosen.** The product's words — run,
-   checkpoint, draft, current, beachhead, value proposition, demand evidence, outlier, related and
-   the rest — are one short file on the server, the resource `benevox://glossary`. Read it once per
+   checkpoint, draft, current, potential niche, promise statement, promise group, proven, watch
+   channel, beachhead, value proposition, outlier, related and the rest — are one short file on the server, the resource `benevox://glossary`. Read it once per
    session so a question is asked in the product's words and an answer is read in them. Already read
    in this session: go to step 2. If this harness does not list the `benevox` server's resources,
    skip it: the tool descriptions carry the words the instruments need.
@@ -47,8 +48,8 @@ Every question, whoever asks it, goes through these four steps in this order.
 
 | The question | Instrument | Call |
 | --- | --- | --- |
-| names a part of the niche, or a row whose id you hold; or asks about segment or proposition items, directions or demand evidence — "which value propositions have no demand evidence?" | **exact** | `get_niche`; `get_run` by id; `get_channel` |
-| names a subject and no row — "when did we decide the niche statement?", "what do we know about developers with a day job?"; or is a duplicate check before a write — "is there already a value proposition like this?" | **search by meaning** | `search(question, limit)` |
+| names a part of the niche, or a row whose id you hold; or asks about segment or proposition items, potential niches, promise statements, promise groups, outliers or watch channels — "which value propositions are not proven yet?", "what do our competitors sell?" | **exact** | `get_niche`; `list_watch_channels` and `get_watch_channel`; `get_run` by id; `get_channel` |
+| names a subject and no row — "when did we decide the promise statement?", "what do we know about developers with a day job?"; or is a duplicate check before a write — "is there already a value proposition like this?" | **search by meaning** | `search(question, limit)` |
 | holds a row and asks what is tied to it — "what hangs on this segment?" | **search by connection** | `get_neighbours(table, id)` |
 | has a shape with more than one hop — "which runs are linked to the beachhead?", "what did each of our niches promise its beachhead?" | **search by query** | `run_analytical_query` with a shape from [reference/shapes.md](reference/shapes.md) |
 | asks who changed what, or what a run wrote | **history** | `get_history` on the run, or on the subject's table and id |
@@ -64,8 +65,9 @@ rule with examples.
 organisation, and answers their rows — each by table, id and title, with the passage that matched
 quoted, a similarity from 0 to 1, and when it happened. Passages come from completed and paused
 runs (their headline and summary, the `Decided:` lines among them), niches, segments (name and
-description) and value propositions (statement). Segment and proposition items, directions and
-demand evidence have none: `get_niche` reads them. Write the question as one sentence about the
+description) and value propositions (statement). Segment and proposition items, potential niches,
+promise statements, promise groups and watch channels have none: `get_niche` and
+`get_watch_channel` read them. Write the question as one sentence about the
 subject. Five rows by default, up to twenty. A hit below 0.5 is named as weak.
 
 "When did we decide …" is answered from the run whose `Decided:` line says it: quote that line and
@@ -82,8 +84,8 @@ segments and value propositions of a niche, a value proposition's segment and th
 propositions written for a segment, the niche a Pick a niche run worked on and the runs that worked
 on a niche) and every accepted link, each with its word, direction, origin and confidence. A
 rejected link is never one. The table is one of `runs`, `niches`, `customer_segments` or
-`value_propositions`; items, directions and demand evidence are not rows it walks — read them with
-`get_niche`.
+`value_propositions`; items, potential niches, promise statements, promise groups and watch
+channels are not rows it walks — read them with `get_niche` and `get_watch_channel`.
 
 A walk of more than one hop is bounded: `get_neighbours` on the row named, then at most two more
 calls. When a shaped query is refused or fails twice, answer from what the calls found and say the
@@ -103,8 +105,8 @@ it: answer by meaning and by connection instead and say so.
 Always in this shape, whoever asked:
 
 ```
-Search by meaning — search("when did we decide the niche statement?", 5):
-  runs 0192… "Pick a niche: statement and beachhead written" (run, ended 26 September) 0.88 — "Decided: statement: I help developers with a day job ship a product"
+Search by meaning — search("when did we decide the promise statement?", 5):
+  runs 0192… "Pick a niche: niche picked, beachhead written" (run, ended 26 September) 0.88 — "Decided: promise statement: I help developers with a day job ship a product"
   niches 0192… draft niche of Pete Builds 0.71 — "I help developers with a day job …"
 ```
 

@@ -9,7 +9,9 @@ when writing the answer.
 | --- | --- |
 | "What is on the draft niche?" | `get_niche` on the draft the channel names |
 | "Which segment is the beachhead?" | `get_niche`, the segment with the beachhead mark |
-| "Which value propositions have no demand evidence?" | `get_niche`: the demand evidence and the verdict per value proposition |
+| "Which value propositions are not proven yet?" | `get_niche`: each value proposition's distinct channels against `minDemandChannels`, and the watch channels behind them |
+| "Which promise statement drew the most outliers?" | `get_niche`: each promise statement's on-topic outliers, distinct channels and proven promises |
+| "Which channels compete with us, and what do they sell?" | `list_watch_channels(channelId)`, the ones whose role is `Competitor`; `get_watch_channel` on each for its offers |
 | "Which pains does this value proposition relieve?" | `get_niche`: its pain relievers and the pain each points at |
 | "What did that run do?" | `get_run(id)` |
 | "What did last night's linker run change?" | `get_history` on the run |
@@ -18,10 +20,10 @@ when writing the answer.
 
 | Asked | `search` question | Limit |
 | --- | --- | --- |
-| "When did we decide the niche statement?" | "the decision on the niche statement" | 5 |
+| "When did we decide the promise statement?" | "the decision on the promise statement" | 5 |
 | "What do we know about developers with a day job?" | "the segment of developers with a day job" | 5 |
 | "Is there already a value proposition about agents building at night?" | "a value proposition that agents build while the founder is at work" | 5 |
-| "Find every mention of the AI factory direction" | "AI factory in public" | 20 |
+| "Find every mention of the AI factory niche" | "AI factory in public" | 20 |
 
 One question, one sentence, the glossary's words. A duplicate check answers yes or no with the hit
 quoted: a similarity above 0.85 with the same subject is a duplicate, below 0.5 is not, in between
@@ -30,9 +32,10 @@ the quoted passage decides and the answer says so.
 A decision is answered from the run whose summary carries a `Decided:` line on it: quote the line,
 give the run's date, name "search by meaning".
 
-A segment's jobs, pains and gains, a value proposition's items, directions and demand evidence have
-no passages of their own. Find the segment or the value proposition by meaning, then read its items
-with `get_niche`.
+A segment's jobs, pains and gains, a value proposition's items, potential niches, promise
+statements, promise groups and watch channels have no passages of their own. Find the segment or
+the value proposition by meaning, then read its items with `get_niche`; a watch channel is read
+with `list_watch_channels` and `get_watch_channel`.
 
 ## Search by connection — a row is known
 
@@ -60,7 +63,7 @@ then `get_neighbours` on each of the five, answered grouped by row.
 
 | Asked | Do |
 | --- | --- |
-| "Who changed the statement?" | `get_history("niches", id)` |
+| "Who changed the promise statement?" | `get_history("niches", id)` |
 | "What did Producer write last night?" | `get_history` on that run |
 
 Each change names its actor — the founder by name, or Producer with the run — the property and

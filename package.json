@@ -1,6 +1,6 @@
 {
   "name": "benevox",
-  "version": "0.1.0+6555f8b83916",
+  "version": "0.1.0+fb408f9dfedb",
   "description": "Installs the Benevox skill and MCP server into a project, for harnesses with no plugin system.",
   "type": "module",
   "engines": {

@@ -12,8 +12,8 @@ Put the two ends into one sentence that a word's meaning describes, with the tit
   dependent to what it depends on.
 - "*Every session ends with a finished increment* makes *Only 5–10 hours a week* matter less." —
   `decreases`, from the cause to what it lowers; a magnitude only when the text says how much.
-- "*The run that settled the statement* answers *what the niche statement is*." — `answers`, from
-  the answer to the question.
+- "*The run that settled the promise statement* answers *what the niche's promise statement is*."
+  — `answers`, from the answer to the question.
 - "*AI factory in public* enables *Your agents build while you're at work*." — `enables`, from what
   makes it possible to what it makes possible.
 

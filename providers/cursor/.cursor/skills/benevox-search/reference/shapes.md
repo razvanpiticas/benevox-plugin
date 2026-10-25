@@ -11,7 +11,7 @@ Vertices, each with the properties it exposes:
 - `run` — `id`, `channel_id`, `agent_id`, `status` (`Running`, `Paused`, `Completed`, `Failed`,
   `Cancelled`), `headline`, `started_at_utc`, `ended_at_utc` (set once it paused or ended),
   `subject_id` (the niche a Pick a niche run worked on; empty on a plain run);
-- `niche` — `id`, `channel_id`, `state` (`Draft`, `Current`, `Superseded`), `statement`,
+- `niche` — `id`, `channel_id`, `state` (`Draft`, `Current`, `Superseded`), `promise_statement`,
   `audience`, `problem`, `method`;
 - `segment` — `id`, `niche_id`, `name`, `description`, `market_type`, `status` (`Hypothesis`,
   `Inferred`, `Confirmed`), `is_beachhead`, `retired_at_utc` (empty while it is live);
@@ -36,12 +36,14 @@ read as its passages' `passage_text`, or whole with `get_run`.
 ## What the graph cannot answer
 
 Segment items (jobs, pains, gains), proposition items (products, pain relievers, gain creators,
-dream outcome, enhancers, names) and what each points at, directions, demand evidence and the
-verdict per value proposition, keywords, the TAM and readiness are not in the graph. Neither are
-videos, their strategy, the library, insights, the inbox or routines. So "which value propositions
-have no demand evidence", "the pains a value proposition relieves", "which pain has no reliever",
-"which direction was picked" are not queries: `get_niche` answers each, in one call that holds the
-niche whole. Insights are `list_insights`; what a run did is `get_run` and `get_history`.
+dream outcome, enhancers, names) and what each points at, potential niches, the shortlist and the
+pick, promise statements, promise groups, their outliers and whether a value proposition is
+proven, keywords, the TAM and readiness are not in the graph. Neither are watch channels, videos,
+their strategy, the library, insights, the inbox or routines. So "which value propositions are not
+proven yet", "the pains a value proposition relieves", "which pain has no reliever", "which
+potential niche was picked" are not queries: `get_niche` answers each, in one call that holds the
+niche whole. Watch channels are `list_watch_channels` and `get_watch_channel`; insights are
+`list_insights`; what a run did is `get_run` and `get_history`.
 
 ## What the server refuses
 
@@ -79,12 +81,12 @@ proposition: `get_niche` on its niche says what it does have.
 ## S2 — what each niche of a channel promised its beachhead (two hops)
 
 ```sql
-SELECT niche_state, niche_statement, segment_name, vp_statement, vp_status
+SELECT niche_state, niche_promise_statement, segment_name, vp_statement, vp_status
 FROM GRAPH_TABLE (studio
   MATCH (vp IS value_proposition WHERE vp.retired_at_utc IS NULL)
         -[IS for_segment]-> (s IS segment WHERE s.is_beachhead)
         -[IS of_niche]-> (n IS niche WHERE n.channel_id = '<channelId>')
-  COLUMNS (n.state AS niche_state, n.statement AS niche_statement, s.name AS segment_name, vp.statement AS vp_statement, vp.status AS vp_status))
+  COLUMNS (n.state AS niche_state, n.promise_statement AS niche_promise_statement, s.name AS segment_name, vp.statement AS vp_statement, vp.status AS vp_status))
 ORDER BY niche_state
 ```
 
@@ -93,10 +95,10 @@ A niche missing from the answer has no beachhead, or none with a live value prop
 ## S3 — the Pick a niche runs on a channel's niches, newest first, and how each stopped (one hop)
 
 ```sql
-SELECT run_id, run_status, headline, started, ended, niche_state, niche_statement
+SELECT run_id, run_status, headline, started, ended, niche_state, niche_promise_statement
 FROM GRAPH_TABLE (studio
   MATCH (r IS run) -[IS worked_on]-> (n IS niche WHERE n.channel_id = '<channelId>')
-  COLUMNS (r.id AS run_id, r.status AS run_status, r.headline AS headline, r.started_at_utc AS started, r.ended_at_utc AS ended, n.state AS niche_state, n.statement AS niche_statement))
+  COLUMNS (r.id AS run_id, r.status AS run_status, r.headline AS headline, r.started_at_utc AS started, r.ended_at_utc AS ended, n.state AS niche_state, n.promise_statement AS niche_promise_statement))
 ORDER BY started DESC
 ```
 

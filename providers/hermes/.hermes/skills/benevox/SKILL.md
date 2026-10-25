@@ -42,13 +42,13 @@ channel as step 2 says when it is not known, boot Producer as step 3 says, and h
 it was made. A skill whose description seems to match the task is not the route: that skill is
 reached from inside `benevox-agent`.
 
-- **A question** — "when did we decide the niche statement", "what do we know about the beachhead",
+- **A question** — "when did we decide the promise statement", "what do we know about the beachhead",
   "is there already a value proposition like this" — `benevox-agent` hands to `benevox-search`
   inside the booted session. Do not answer it here from `get_niche` or the brief: which instrument
   answers is that skill's rule, and its answer names the one it used.
-- **Work that writes** — Pick a niche, the linker, the distiller, a write on the niche or a video's
-  strategy — `benevox-agent` invokes the skill that does the work; the run carries Producer's id,
-  every write carries the run's id, and the run ends with its links typed.
+- **Work that writes** — Pick a niche, the linker, the distiller, a write on the niche, a watch
+  channel or a video's strategy — `benevox-agent` invokes the skill that does the work; the run
+  carries Producer's id, every write carries the run's id, and the run ends with its links typed.
 - **The routines menu and the plugin update** — `benevox-agent` hands to `benevox-routines` or
   `benevox-update`; the routine tools take no run id, so switching a routine on stays the person's
   act.
@@ -97,19 +97,23 @@ Every call is also tenant-scoped from the caller's token. A caller who belongs t
 
 ## The tools
 
-Seventy-two tools. Sixty-six over Studio — runs, the agent and its boot brief, the method (the
-operation, its procedures, the part descriptions), insights, the inbox, routines, search by meaning,
-by connection and by query, the change history, links, channels, the niche and its directions,
-segments, value propositions and demand evidence, a video's strategy, and `search_youtube_videos` —
-plus `server_info` and five `*_health` checks. The full table with permissions and which tools take
-a version or a run is in [reference/tools.md](reference/tools.md). **How to read and write a
-channel's niche — which part, which fields, which version — is the `benevox-studio` skill; load it
-for any read or write on a niche, a video's strategy or the library.** Being Producer is the
-`benevox-agent` skill.
+Ninety tools. Eighty-four over Studio — runs, with checkpointing a procedure and going back to one,
+the agent and its boot brief, the method (the operation, its procedures, the part descriptions),
+insights, the inbox, routines, search by meaning, by connection and by query, the change history,
+links, channels, the niche with its potential niches, shortlist, TAMs and pick, its promise
+statements and promise groups, segments and value propositions, the channel's watch channels with
+their profiles, offers, roles and links, a video's strategy, and `search_youtube_videos` — plus
+`server_info` and five `*_health` checks. The full table with permissions and which tools take a
+version or a run is in [reference/tools.md](reference/tools.md). **How to read and write a
+channel's niche and watch channels — which part, which fields, which version — is the
+`benevox-studio` skill; load it for any read or write on a niche, a watch channel, a video's
+strategy or the library.** Pick a niche, its five procedures and going back to one are the
+`benevox-niche` skill. Being Producer is the `benevox-agent` skill.
 
-The server's own words — run, checkpoint, draft, beachhead, value proposition, demand evidence,
-outlier, related — are the resource `benevox://glossary`. Read it once in a session before the
-first search.
+The server's own words — run, checkpoint, draft, founder's skills and likes, potential niche,
+shortlist, pick, promise statement, promise group, outlier, proven, TAM, watch channel, beachhead,
+value proposition, related — are the resource `benevox://glossary`. Read it once in a session
+before the first search.
 
 `server_info` reports the tool list; when it disagrees with this file or any document, it is right.
 
@@ -122,9 +126,9 @@ rather than resending the same call.
 - **The refusal is a 403** — a permission, tenant or read-only problem. Retrying cannot fix it.
   Tell the user which permission is missing.
 - **The refusal is a 401** — the token expired or was never minted. Sign in again.
-- **The refusal is a CONFLICT naming a version** — the niche, the procedure, the agent or the
-  routine moved since you read it. Re-read and decide again from what it says now; never resend
-  the same call with the newer number alone.
+- **The refusal is a CONFLICT naming a version** — the niche, a watch channel, the procedure, the
+  agent or the routine moved since you read it. Re-read and decide again from what it says now;
+  never resend the same call with the newer number alone.
 - **The refusal is a CONFLICT naming `runId`** — "This run has ended, been paused or belongs to
   someone else. Nothing was written; start a new run." Every other call carrying that run is refused
   the same way. Stop working it, say so, and start a new run before writing anything else.
@@ -147,8 +151,9 @@ For symptoms that survive a retry, read
 **Never invent a tenant.** No tool takes a tenant argument, and none should — the tenant comes from
 the token. A call that appears to need one is a sign the wrong tool was chosen.
 
-**Never invent an id.** Channels, niches, segments, value propositions, runs and agents are
-addressed by the ids a read answered. People speak in names; find the id, never ask for it.
+**Never invent an id.** Channels, niches, potential niches, promise statements, segments, value
+propositions, watch channels, runs and agents are addressed by the ids a read answered. People
+speak in names; find the id, never ask for it.
 
 **Do not cache what a read returns across turns.** It is live state the founder can change on the
 screens between calls, and every niche write is checked against the version you last read.

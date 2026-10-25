@@ -64,15 +64,15 @@ When a routine named the session, do not ask: read the routine you found before 
 **Read what the founder named before you propose anything.** A part of the niche — "the beachhead",
 "our value propositions" — read it through `benevox-studio` (`get_niche`) and say in a few lines
 what it holds before you propose. A subject that is not a part — "the thumbnail idea", "what we
-decided about the statement" — goes to `benevox-search` first. The founder hears what Studio says
-before being asked what to do with it.
+decided about the promise statement" — goes to `benevox-search` first. The founder hears what
+Studio says before being asked what to do with it.
 
 **Then route.** What the founder asks for is done by the skill that owns it:
 
 | Asked | Skill | How |
 | --- | --- | --- |
-| "Pick a niche", "continue the niche", the niche operation | `benevox-niche` | Hand it your `agentId` and the channel; it opens the operation run itself — open no run of your own for it first |
-| A write or read on the niche, the brand, a video's strategy, the library | `benevox-studio` | Inside your run |
+| "Pick a niche", "continue the niche", "go back to the shortlist", the niche operation | `benevox-niche` | Hand it your `agentId` and the channel; it opens the operation run itself — open no run of your own for it first |
+| A write or read on the niche, a watch channel, the brand, a video's strategy, the library | `benevox-studio` | Inside your run |
 | A question about what was decided or is known | `benevox-search` | Inside your run; it writes nothing |
 | "Type the links" | `benevox-linker` | Inside your run |
 | "Distil the insights" | `benevox-distiller` | Inside your run |
@@ -124,8 +124,8 @@ Waiting: <what waits on someone, and on whom>
 ```
 
 `Decided:` lines are what a later "when did we decide …" finds by meaning. Write the decision's own
-words — "Decided: statement: I help developers with a day job ship a product" — not "updated the
-statement".
+words — "Decided: promise statement: I help developers with a day job ship a product" — not
+"updated the promise statement".
 
 **Every run you open is ended.** A run left `Running` is a session nobody can tell is finished, and
 the next boot measures "changes since" from the last run that ended. "Leave the run open", "I'll

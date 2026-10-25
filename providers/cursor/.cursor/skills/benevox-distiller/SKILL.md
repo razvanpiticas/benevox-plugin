@@ -1,6 +1,6 @@
 ---
 name: "benevox-distiller"
-description: "Distil the insights recorded on the method — the drafts runs left behind and the confirmed learnings on the niche operation, its procedures and the part descriptions — into one proposal per subject whose text should change, folding repeats together, escalating contradictions and never applying or rejecting anything. Use when the founder says \"distil the insights\", \"what did we learn about the Demand test\", \"clean up the insights\", when the Nightly distiller routine fires, or when a run's blockers were recorded and the founder asks what the method should say instead."
+description: "Distil the insights recorded on the method — the drafts runs left behind and the confirmed learnings on the niche operation, its procedures and the part descriptions — into one proposal per subject whose text should change, folding repeats together, escalating contradictions and never applying or rejecting anything. Use when the founder says \"distil the insights\", \"what did we learn about the potential niches shortlist\", \"clean up the insights\", when the Nightly distiller routine fires, or when a run's blockers were recorded and the founder asks what the method should say instead."
 ---
 
 # Benevox distiller
@@ -127,8 +127,8 @@ The `benevox` skill's table, plus:
 
 - **A proposal is the whole text**, with the change in place, not a diff and not the paragraph that
   changes. A fragment applied is a procedure with a hole in it.
-- **One proposal per subject per pass.** Two insights on the Demand test become one proposal on the
-  Demand test.
+- **One proposal per subject per pass.** Two insights on Markets' need and pay become one proposal
+  on Markets' need and pay.
 - **Never invent an insight.** Every statement in a distillate traces to an insight or a run you
   read, named in its body. A pass that finds nothing to fold says so.
 - **The founder's word on a contradiction is read, not guessed.** Until it arrives, both stand.
