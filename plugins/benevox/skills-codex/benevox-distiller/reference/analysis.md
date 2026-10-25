@@ -2,6 +2,10 @@
 
 Load this before writing anything. The reading is done; this is what to make of it.
 
+Two words, both read off the rows `list_insights` answers. A **confirmed** insight is `Open` with
+`reviewState` `Approved`: a person wrote it, and it was approved as it was written. A **draft** is
+`Open` with `reviewState` `Draft`: an agent recorded it in a run, and nobody has ruled on it.
+
 ## Group
 
 Within one subject, put insights together when they are about the same thing: the same step of a
@@ -16,11 +20,11 @@ left where it is, unless it already carries a proposal the founder can rule on.
 
 ## Contradicting
 
-Two insights that cannot both hold contradict. Two **open** ones that contradict are both left
-standing and named in the digest — the founder has not looked at either. An open one that
-contradicts a **confirmed** one is left standing, and the digest says which confirmed insight it
-challenges. Two **confirmed** insights that contradict are the one case that is escalated: neither
-can be folded away, and only the founder may say which survives.
+Two insights that cannot both hold contradict. Two **drafts** that contradict are both left
+standing and named in the digest — the founder has not looked at either. A draft that contradicts a
+**confirmed** one is left standing, and the digest says which confirmed insight it challenges. Two
+**confirmed** insights that contradict are the one case that is escalated: neither can be folded
+away, and only the founder may say which survives.
 
 ## What the text should say instead
 
@@ -39,7 +43,9 @@ it folds in and the runs it read.
 
 ## Stale
 
-A confirmed insight older than a month with no run in the window naming it is stale. Stale is a
+A confirmed insight whose `updatedAtUtc` is older than a month, with no run in the window naming
+it, is stale. Read them with `list_insights(state: "Open")` — the channel's, and the part
+descriptions' with no `channelId` — and keep the rows whose `reviewState` is `Approved`. Stale is a
 question for the founder, not a verdict: list every stale insight of the pass in one escalation, by
 subject and title, asking which still hold.
 
@@ -47,17 +53,20 @@ subject and title, asking which still hold.
 
 Handed to `benevox-agent` for the run's summary. In this order, plain lines, counts first:
 
-- the window or the subject, and how many insights were read, of which how many open;
+- the window or the subject, and how many insights were read, of which how many drafts and how
+  many confirmed;
 - how many were folded together, and into what: each distillate by subject and title, and what it
   superseded;
 - every proposal, by subject, with one sentence on what changes and why;
-- every escalation raised: the proposals to apply, the contradictions, the stale list with its count;
+- every escalation raised: the contradictions, the stale list with its count;
 - every confirmed insight contradicted on the founder's word;
-- what was left alone and why: single insights, open ones that contradict, subjects with nothing to
+- what was left alone and why: single insights, drafts that contradict, subjects with nothing to
   fold;
 - what the pass could not read: a refusal, a run it could not open, a subject it could not resolve.
 
-The summary also carries `Next:` — "Founder applies the Demand test proposal on Studio → Insights"
-— and `Waiting:` lines for each escalation, so the next boot names them.
+The summary also carries `Next:`, and one `Waiting:` line per proposal — "Waiting: founder applies
+or rejects the Demand test proposal on Studio → Insights" — and per escalation, so the next boot
+names them. The run is ended, never paused; when a routine fired it, Studio files the headline and
+this summary in the founder's inbox as the run's report.
 
 No recommendation the founder did not ask for, and no insight of the pass's own.

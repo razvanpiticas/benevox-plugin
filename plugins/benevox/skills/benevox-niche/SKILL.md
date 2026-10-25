@@ -1,8 +1,8 @@
 ---
-name: benevox-niche
-description: Pick a niche — run the channel's niche operation with the founder end to end: read the operation and its procedures as this channel has them, open a run on the draft niche, follow each procedure in order with the founder (sources, directions, skill, statement, customer segments, value propositions, demand test, TAM), write what it produces inside the run, checkpoint after every procedure, pause or end with a headline, and say when the draft is ready for the founder to make current. Use when the founder picks "Pick a niche" from the Benevox menu, says "pick a niche", "continue the niche", "work on the draft niche", or asks for the niche operation to be run. Attended only; a founder's request reaches it through benevox-agent, which boots the agent the run is recorded under.
-argument-hint: <channel name> ["continue"]
-allowed-tools: mcp__benevox__get_channel, mcp__benevox__get_niche, mcp__benevox__list_operations, mcp__benevox__get_operation, mcp__benevox__get_procedure, mcp__benevox__list_part_descriptions, mcp__benevox__get_part_description, mcp__benevox__start_run, mcp__benevox__checkpoint_run, mcp__benevox__observe_run, mcp__benevox__pause_run, mcp__benevox__end_run, mcp__benevox__get_run, mcp__benevox__list_runs, mcp__benevox__update_niche, mcp__benevox__add_direction, mcp__benevox__update_direction, mcp__benevox__remove_direction, mcp__benevox__pick_direction, mcp__benevox__add_segment, mcp__benevox__update_segment, mcp__benevox__retire_segment, mcp__benevox__set_beachhead, mcp__benevox__add_segment_item, mcp__benevox__update_segment_item, mcp__benevox__retire_segment_item, mcp__benevox__add_value_proposition, mcp__benevox__update_value_proposition, mcp__benevox__retire_value_proposition, mcp__benevox__add_proposition_item, mcp__benevox__update_proposition_item, mcp__benevox__retire_proposition_item, mcp__benevox__add_demand_evidence, mcp__benevox__remove_demand_evidence, mcp__benevox__set_video_strategy, mcp__benevox__search_youtube_videos, mcp__benevox__set_channel_brand, mcp__benevox__record_operation_insight, mcp__benevox__record_procedure_insight, mcp__benevox__list_insights, mcp__benevox__supersede_insight
+name: "benevox-niche"
+description: "Pick a niche — run the channel's niche operation with the founder end to end: read the operation and its procedures as this channel has them, open a run on the draft niche, follow each procedure in order with the founder (sources, directions, skill, statement, customer segments, value propositions, demand test, TAM), write what it produces inside the run, checkpoint after every procedure, pause or end with a headline, and say when the draft is ready for the founder to make current. Use when the founder picks \"Pick a niche\" from the Benevox menu, says \"pick a niche\", \"continue the niche\", \"work on the draft niche\", or asks for the niche operation to be run. Attended only; a founder's request reaches it through benevox-agent, which boots the agent the run is recorded under."
+argument-hint: "<channel name> [\"continue\"]"
+allowed-tools: "mcp__benevox__get_channel, mcp__benevox__get_niche, mcp__benevox__list_operations, mcp__benevox__get_operation, mcp__benevox__get_procedure, mcp__benevox__list_part_descriptions, mcp__benevox__get_part_description, mcp__benevox__start_run, mcp__benevox__checkpoint_run, mcp__benevox__observe_run, mcp__benevox__pause_run, mcp__benevox__end_run, mcp__benevox__get_run, mcp__benevox__list_runs, mcp__benevox__update_niche, mcp__benevox__add_direction, mcp__benevox__update_direction, mcp__benevox__remove_direction, mcp__benevox__pick_direction, mcp__benevox__add_segment, mcp__benevox__update_segment, mcp__benevox__retire_segment, mcp__benevox__set_beachhead, mcp__benevox__add_segment_item, mcp__benevox__update_segment_item, mcp__benevox__retire_segment_item, mcp__benevox__add_value_proposition, mcp__benevox__update_value_proposition, mcp__benevox__retire_value_proposition, mcp__benevox__add_proposition_item, mcp__benevox__update_proposition_item, mcp__benevox__retire_proposition_item, mcp__benevox__add_demand_evidence, mcp__benevox__remove_demand_evidence, mcp__benevox__set_video_strategy, mcp__benevox__search_youtube_videos, mcp__benevox__set_channel_brand, mcp__benevox__record_operation_insight, mcp__benevox__record_procedure_insight, mcp__benevox__list_insights, mcp__benevox__supersede_insight"
 ---
 
 # Benevox niche
@@ -48,7 +48,8 @@ is not the test; the routine id is.
 
 1. **Read the operation.** `get_operation("youtube-niche", channelId)`. It answers the description,
    the validated-when sentence and its threshold (`min-demand-channels`), what to do if not, the
-   procedures in order with their source (shipped or customised) and version, and a resumable run.
+   procedures in order — each by code, name, source (shipped or customised) and version, never its
+   text — and a resumable run.
    Read the description and the validated-when first: they frame every procedure. A resumable run
    means a session paused this operation — go to [Resuming](#resuming).
 2. **Read the draft.** `get_niche` on the channel's draft when there is one (the brief or
@@ -59,9 +60,10 @@ is not the test; the routine id is.
    channel screen now shows the draft with "0 of 8 procedures".
 4. **Do the procedures, in order, one at a time.** For each procedure the operation lists that the
    run has not checkpointed:
-   - Read its instructions in full — `get_procedure(code, channelId)` when the operation's copy is
-     cut short. Read the part descriptions the instructions name (`get_part_description`): they say
-     what each part of a niche is for, as this organisation has it.
+   - Read its instructions in full with `get_procedure(code, channelId)`: `get_operation` lists the
+     procedure, it never carries its text. Read the part descriptions the instructions name
+     (`get_part_description`): they say what each part of a niche is for, as this organisation has
+     it.
    - Work it **with the founder**: ask what the procedure asks them, propose what it produces, and
      show the proposal before writing. STOP and call the AskUserQuestion tool to clarify.
    - Write what the founder agreed through `benevox-studio`'s calls, each with `runId` and the
@@ -93,7 +95,7 @@ The procedure's own text is the method; this table only says where its output la
 | Procedure | Writes |
 | --- | --- |
 | Sources | `update_niche` with the sources note |
-| Directions | `add_direction` per direction: who it serves, the problem, how it makes money, the advantage |
+| Directions | `add_direction` per direction: its name, its rank (1 for the most unfair advantage, best first), who it serves, the problem, how it makes money, the advantage |
 | Skill | `update_direction` with each direction's skill score 1–5, then `pick_direction` on the one the founder picks |
 | Statement | `update_niche` with the statement, the audience, the problem, the method, the keywords |
 | Customer segments | `add_segment` with its market type; `add_segment_item` for each job (kind, importance), pain (severity) and gain (relevance), each with a status; `set_beachhead` on the segment to win first |

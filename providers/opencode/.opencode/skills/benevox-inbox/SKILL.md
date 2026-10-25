@@ -1,6 +1,6 @@
 ---
-name: benevox-inbox
-description: Talks to the founder when nobody is in the window — a message they read, an escalation that blocks the run with its proposed answer last, and the answer that came back in the next boot's brief. Use inside a run that a routine fired, such as the Nightly distiller or the Nightly linker: for anything the founder should know but need not answer, for anything the run cannot decide on its own, and to read what the founder answered since the last run. Never in an attended session, where the founder is in the chat and you simply ask.
+name: "benevox-inbox"
+description: "Talks to the founder when nobody is in the window — a message they read, an escalation that blocks the run with its proposed answer last, and the answer that came back in the next boot's brief. Use inside a run that a routine fired, such as the Nightly distiller or the Nightly linker: for anything the founder should know but need not answer, for anything the run cannot decide on its own, and to read what the founder answered since the last run. Never in an attended session, where the founder is in the chat and you simply ask."
 ---
 
 # Benevox inbox
@@ -35,12 +35,13 @@ Here the run is handed to you by the skill that invoked you inside it.
 | You need | Shape | Tool | What the founder does |
 | --- | --- | --- | --- |
 | to tell them something that needs no answer | a message | `send_message` | reads it |
-| an answer before the run can go on | an escalation | `raise_escalation`, then the caller pauses the run | answers with a note, or resolves it with none — which means "do what you proposed" |
-| to report what the run did | nothing here | `end_run`'s headline and summary are the run's record | reads it on Studio → Runs |
-| a ruling on a proposal the distiller wrote | nothing here | the proposal is on Studio → Insights | applies or rejects it there |
+| an answer the run cannot do without | an escalation | `raise_escalation`, then the caller pauses the run — or, when its own text says so, as the distiller's does, ends it with a `Waiting:` line | answers with a note, or resolves it with none — which means "do what you proposed" |
+| to report what the run did | nothing here | `end_run`'s headline and summary. When a routine fired the run and it ends Completed or Failed, Studio files them in the inbox as a run report; a plain run, which no routine fired, is read on Studio → Runs only | reads the report and resolves it |
+| a ruling on a proposal the run recorded | nothing here | recording the proposal files an insight review in the inbox on its own | applies or rejects it on Studio → Insights, which answers the review |
 
 If the shape is in the lower two rows, do not send a message or an escalation as well: two rows
-about one thing is one row too many.
+about one thing is one row too many. Never a message saying the run is done: the run report says
+it.
 
 ## Sending a message
 
@@ -68,10 +69,12 @@ answered without anybody asking you back:
 
 Send `raise_escalation(channelId, title, body, subjectTable?, subjectId?, runId)`, record the id it
 answers on the run (`observe_run(runId, note)` naming it), then **hand back to the skill that called
-you: it pauses the run**. Raising does not stop the run by itself.
+you: it pauses the run**, unless that skill's own text ends it instead — the distiller finishes its
+pass and ends its run with one `Waiting:` line per escalation. Raising does not stop the run by
+itself.
 
-One escalation per question. A question asked in a run that is now paused was asked once; the next
-boot reads the answer (below) and, finding none, leaves the run paused and asks nothing again.
+One escalation per question. A question asked in a run that is now paused, or ended waiting on it,
+was asked once; the next boot reads the answer (below) and, finding none, asks nothing again.
 
 [reference/asks.md](reference/asks.md) has the body of each escalation a skill raises under the
 unattended rule, so the same question is always asked the same way.
@@ -79,15 +82,19 @@ unattended rule, so the same question is always asked the same way.
 ## Reading the answer
 
 The answers come back in the brief, never through a read of the inbox: `boot_agent` carries the
-answers resolved since the agent's last run — the item, its title, the founder's note, when.
+escalations the booted stream raised on the channel — the runs of the routine its `routineId`
+names — that the founder resolved since that stream's last run ended or paused — the item, its
+title, the founder's note, when — and how many items still wait on that channel. So the routine's
+next boot reads the answer, whatever other routine or session ran in between.
 
-- Find the line for the escalation the paused run recorded.
+- Find the line for the escalation the earlier run recorded with `observe_run`.
 - Resolved with a note → the note is the answer; do what it says, even when it is not what you
   proposed.
 - Resolved with no note → do what you proposed.
 - No line → not answered yet. Leave the run paused; ask nothing again.
 
-A message never appears there: it is read, not answered.
+A message never comes back, and neither does a run report or an insight review: they are read or
+ruled on, not answered.
 
 ## Reading a refusal
 

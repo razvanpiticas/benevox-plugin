@@ -1,6 +1,6 @@
 ---
-name: benevox
-description: The front door to Benevox Studio and the connection under every other Benevox skill. Invoked with nothing, it signs in, picks the channel, boots the Producer agent, says where the channel stands and what happened last, proposes the one thing that should happen next, and offers everything else the plugin can do — Pick a niche first among them. Use when the person types the Benevox command alone, asks "where do we stand", "what's next", "what can you do", or for a menu; when a Benevox tool refuses a call; or when connecting a harness to the Benevox server.
+name: "benevox"
+description: "The front door to Benevox Studio and the connection under every other Benevox skill. Invoked with nothing, it signs in, picks the channel, boots the Producer agent, says where the channel stands and what happened last, proposes the one thing that should happen next, and offers everything else the plugin can do — Pick a niche first among them. Use when the person types the Benevox command alone, asks \"where do we stand\", \"what's next\", \"what can you do\", or for a menu; when a Benevox tool refuses a call; or when connecting a harness to the Benevox server."
 ---
 
 # Benevox

@@ -10,7 +10,8 @@ None of them is anonymous: every one requires a signed-in caller who belongs to 
 **`runId`** is the run the call is made from inside. Every write takes it except `start_run`, which
 opens the run, and the routine tools, which are the person's own act. Inside a run, send it on every
 write until the run ends; the change history then records the write against Producer and the run.
-A write without it is recorded as the signed-in person's own.
+A write without it is recorded as the signed-in person's own. `cancel_run` takes it and is refused
+with it: a cancel is made on the founder's word, with no run.
 
 **`expectedVersion`** is the version a read answered. Every write on a niche — the niche itself,
 its directions, segments, items, value propositions and demand evidence — takes the niche's
@@ -34,7 +35,7 @@ takes none.
 | `observe_run` | **Yes** | `runId`, a note |
 | `pause_run` | **Yes** | `runId`, `headline` (1–120 characters), `summary` |
 | `end_run` | **Yes** | `runId`, `outcome` `Completed` or `Failed`, `headline` (1–120 characters), `summary`, `reason` on a failure |
-| `cancel_run` | **Yes** | `runId` — a person's call, never an agent's |
+| `cancel_run` | **Yes** | `targetRunId`, the run to stop; `runId` as on every write. A person's act: send it on the founder's word with no `runId`, and the call is theirs. Sent with one, Studio refuses it with "Only a person cancels a run. End or pause the run you are in, and cancel a run only on the founder's word, with no run: that call is the founder's own act." The founder also cancels on Studio → Runs — Cancel, on a running or paused run |
 | `get_run`, `list_runs` | No | a run's events, checkpoints and progress; a channel's runs by status |
 
 ## Agent
@@ -42,7 +43,7 @@ takes none.
 | Tool | Changes state | Takes |
 | --- | --- | --- |
 | `list_agents`, `get_agent` | No | — |
-| `boot_agent` | No | `agentId`, `channelId`. Answers the brief: instructions, the channel and its niches, videos by stage, the inbox count, answers resolved since the last run, where we left off, changes since |
+| `boot_agent` | No | `agentId`, `channelId`, `routineId` when a routine fired the session. Answers the brief: instructions, the channel and its niches, videos by stage, how many inbox items wait on this channel, the escalations this session's stream raised on the channel — that routine's runs, or the founder's own sessions with no `routineId` — resolved since that stream's last run, with the founder's note, where we left off, changes since |
 | `update_agent` | **Yes** | the agent's title and instructions, `expectedVersion` — on the person's word |
 | `set_agent_status` | **Yes** | `Active`, `Paused` or `Archived`, `expectedVersion` — on the person's word |
 
@@ -50,8 +51,8 @@ takes none.
 
 | Tool | Changes state | Takes |
 | --- | --- | --- |
-| `list_operations`, `get_operation` | No | `channelId`. The operation as this channel has it: text, thresholds, procedures in order with their source and version, a resumable run |
-| `get_procedure` | No | the procedure's code, `channelId` |
+| `list_operations`, `get_operation` | No | `channelId`. The operation as this channel has it: description, validated-when and if-not, thresholds, the procedures in order — each by code, name, source and version, never its text — and a resumable run |
+| `get_procedure` | No | the procedure's code, `channelId`. Its instructions, the only read that carries them |
 | `list_part_descriptions`, `get_part_description` | No | the part's code. What a niche part is for, as the organisation has it |
 
 ## Insights
@@ -73,7 +74,9 @@ Applying or rejecting a proposal is the founder's, on Studio → Insights. No to
 | `send_message` | **Yes** | `channelId`, title, body, the subject it is about, `runId` |
 | `raise_escalation` | **Yes** | the same; the body ends with the proposed answer |
 
-Reading, marking and resolving the inbox are the founder's, on Studio → Inbox.
+Reading, marking and resolving the inbox are the founder's, on Studio → Inbox. Studio files two
+kinds itself: an insight review for each proposal an agent records, and a run report — the
+headline and summary — when a run a routine fired ends Completed or Failed.
 
 ## Routines
 
@@ -82,6 +85,10 @@ Reading, marking and resolving the inbox are the founder's, on Studio → Inbox.
 | `list_routines`, `get_routine` | No | `channelId`; one routine whole |
 | `update_routine` | **Yes** | schedule, zone and instructions together, `expectedVersion` — no `runId` |
 | `enable_routine`, `disable_routine` | **Yes** | the routine — no `runId` |
+
+Made inside a run, each is refused with "Only a person changes a routine. Call the routine tools
+with no run: they are the founder's own act." A run carrying a routine's id starts only while that
+routine is on.
 
 ## Finding things
 
@@ -96,7 +103,7 @@ Reading, marking and resolving the inbox are the founder's, on Studio → Inbox.
 
 | Tool | Changes state | Takes |
 | --- | --- | --- |
-| `list_untyped_links` | No | `runId` to narrow to one run's rows, a cursor. Answers the words that may be typed with |
+| `list_untyped_links` | No | `runId` for the links touching one run's rows, the session's own; or `channelId` for one channel's backlog, the nightly pass's, with no `runId`; a cursor. Answers the words that may be typed with |
 | `type_link` | **Yes** | the link, the word, the direction, a magnitude and unit, a new word, `runId` |
 
 Confirming and rejecting a link are the founder's, on Studio → Links.
@@ -106,10 +113,10 @@ Confirming and rejecting a link are the founder's, on Studio → Links.
 | Tool | Changes state | Takes |
 | --- | --- | --- |
 | `list_channels`, `get_channel` | No | — |
-| `get_niche` | No | the niche: directions, segments with their items, value propositions with their items, demand evidence with the verdict per value proposition, readiness |
+| `get_niche` | No | the niche: directions best rank first, each with its name and rank, segments with their items, value propositions with their items, demand evidence with the verdict per value proposition, readiness |
 | `set_channel_brand` | **Yes** | `OnPerson`, `Hybrid` or `Faceless`, `expectedVersion`, `runId` |
 | `create_niche`, `update_niche`, `delete_niche` | **Yes** | the channel for a new draft; the niche's fields and version |
-| `add_direction`, `update_direction`, `remove_direction`, `pick_direction` | **Yes** | the niche's version |
+| `add_direction`, `update_direction`, `remove_direction`, `pick_direction` | **Yes** | a direction whole — name, rank, who it serves, problem, how it makes money, advantage, skill score — for an add or an update; the niche's version |
 | `add_segment`, `update_segment`, `retire_segment`, `set_beachhead` | **Yes** | the niche's version |
 | `add_segment_item`, `update_segment_item`, `retire_segment_item` | **Yes** | a job, pain or gain; the niche's version |
 | `add_value_proposition`, `update_value_proposition`, `retire_value_proposition` | **Yes** | the segment it is for; the niche's version |

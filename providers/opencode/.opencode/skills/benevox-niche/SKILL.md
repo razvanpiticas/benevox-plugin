@@ -1,6 +1,6 @@
 ---
-name: benevox-niche
-description: Pick a niche — run the channel's niche operation with the founder end to end: read the operation and its procedures as this channel has them, open a run on the draft niche, follow each procedure in order with the founder (sources, directions, skill, statement, customer segments, value propositions, demand test, TAM), write what it produces inside the run, checkpoint after every procedure, pause or end with a headline, and say when the draft is ready for the founder to make current. Use when the founder picks "Pick a niche" from the Benevox menu, says "pick a niche", "continue the niche", "work on the draft niche", or asks for the niche operation to be run. Attended only; a founder's request reaches it through benevox-agent, which boots the agent the run is recorded under.
+name: "benevox-niche"
+description: "Pick a niche — run the channel's niche operation with the founder end to end: read the operation and its procedures as this channel has them, open a run on the draft niche, follow each procedure in order with the founder (sources, directions, skill, statement, customer segments, value propositions, demand test, TAM), write what it produces inside the run, checkpoint after every procedure, pause or end with a headline, and say when the draft is ready for the founder to make current. Use when the founder picks \"Pick a niche\" from the Benevox menu, says \"pick a niche\", \"continue the niche\", \"work on the draft niche\", or asks for the niche operation to be run. Attended only; a founder's request reaches it through benevox-agent, which boots the agent the run is recorded under."
 ---
 
 # Benevox niche
@@ -46,7 +46,8 @@ is not the test; the routine id is.
 
 1. **Read the operation.** `get_operation("youtube-niche", channelId)`. It answers the description,
    the validated-when sentence and its threshold (`min-demand-channels`), what to do if not, the
-   procedures in order with their source (shipped or customised) and version, and a resumable run.
+   procedures in order — each by code, name, source (shipped or customised) and version, never its
+   text — and a resumable run.
    Read the description and the validated-when first: they frame every procedure. A resumable run
    means a session paused this operation — go to [Resuming](#resuming).
 2. **Read the draft.** `get_niche` on the channel's draft when there is one (the brief or
@@ -57,9 +58,10 @@ is not the test; the routine id is.
    channel screen now shows the draft with "0 of 8 procedures".
 4. **Do the procedures, in order, one at a time.** For each procedure the operation lists that the
    run has not checkpointed:
-   - Read its instructions in full — `get_procedure(code, channelId)` when the operation's copy is
-     cut short. Read the part descriptions the instructions name (`get_part_description`): they say
-     what each part of a niche is for, as this organisation has it.
+   - Read its instructions in full with `get_procedure(code, channelId)`: `get_operation` lists the
+     procedure, it never carries its text. Read the part descriptions the instructions name
+     (`get_part_description`): they say what each part of a niche is for, as this organisation has
+     it.
    - Work it **with the founder**: ask what the procedure asks them, propose what it produces, and
      show the proposal before writing. STOP and call the question tool to clarify.
    - Write what the founder agreed through `benevox-studio`'s calls, each with `runId` and the
@@ -91,7 +93,7 @@ The procedure's own text is the method; this table only says where its output la
 | Procedure | Writes |
 | --- | --- |
 | Sources | `update_niche` with the sources note |
-| Directions | `add_direction` per direction: who it serves, the problem, how it makes money, the advantage |
+| Directions | `add_direction` per direction: its name, its rank (1 for the most unfair advantage, best first), who it serves, the problem, how it makes money, the advantage |
 | Skill | `update_direction` with each direction's skill score 1–5, then `pick_direction` on the one the founder picks |
 | Statement | `update_niche` with the statement, the audience, the problem, the method, the keywords |
 | Customer segments | `add_segment` with its market type; `add_segment_item` for each job (kind, importance), pain (severity) and gain (relevance), each with a status; `set_beachhead` on the segment to win first |

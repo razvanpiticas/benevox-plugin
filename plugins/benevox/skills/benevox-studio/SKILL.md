@@ -1,8 +1,8 @@
 ---
-name: benevox-studio
-description: Reads and writes a Benevox channel's niche through the Benevox MCP tools — the draft, current and past niches, their directions, customer segments with jobs, pains and gains, value propositions with their products, pain relievers and gain creators, demand evidence, the channel's brand decision, a video's strategy and the YouTube library search — and the mechanics of runs. The low-level skill every other Benevox skill reads and writes the niche through: it knows the write loop, the niche version, the run id and the refusals, and nothing of the method. Use it for any read or write on a channel, a niche, a video's strategy or the library, whoever asks for it.
-argument-hint: <channel name> <what to read or write>
-allowed-tools: mcp__benevox__server_info, mcp__benevox__list_channels, mcp__benevox__get_channel, mcp__benevox__get_niche, mcp__benevox__list_part_descriptions, mcp__benevox__get_part_description, mcp__benevox__set_channel_brand, mcp__benevox__create_niche, mcp__benevox__update_niche, mcp__benevox__delete_niche, mcp__benevox__add_direction, mcp__benevox__update_direction, mcp__benevox__remove_direction, mcp__benevox__pick_direction, mcp__benevox__add_segment, mcp__benevox__update_segment, mcp__benevox__retire_segment, mcp__benevox__set_beachhead, mcp__benevox__add_segment_item, mcp__benevox__update_segment_item, mcp__benevox__retire_segment_item, mcp__benevox__add_value_proposition, mcp__benevox__update_value_proposition, mcp__benevox__retire_value_proposition, mcp__benevox__add_proposition_item, mcp__benevox__update_proposition_item, mcp__benevox__retire_proposition_item, mcp__benevox__add_demand_evidence, mcp__benevox__remove_demand_evidence, mcp__benevox__set_video_strategy, mcp__benevox__search_youtube_videos, mcp__benevox__get_run, mcp__benevox__list_runs, mcp__benevox__observe_run
+name: "benevox-studio"
+description: "Read or write the niche by hand. Reads and writes a Benevox channel's niche through the Benevox MCP tools — the draft, current and past niches, their directions, customer segments with jobs, pains and gains, value propositions with their products, pain relievers and gain creators, demand evidence, the channel's brand decision, a video's strategy and the YouTube library search — and the mechanics of runs. The low-level skill every other Benevox skill reads and writes the niche through: it knows the write loop, the niche version, the run id and the refusals, and nothing of the method. Use it for any read or write on a channel, a niche, a video's strategy or the library, whoever asks for it."
+argument-hint: "<channel name> <what to read or write>"
+allowed-tools: "mcp__benevox__server_info, mcp__benevox__list_channels, mcp__benevox__get_channel, mcp__benevox__get_niche, mcp__benevox__list_part_descriptions, mcp__benevox__get_part_description, mcp__benevox__set_channel_brand, mcp__benevox__create_niche, mcp__benevox__update_niche, mcp__benevox__delete_niche, mcp__benevox__add_direction, mcp__benevox__update_direction, mcp__benevox__remove_direction, mcp__benevox__pick_direction, mcp__benevox__add_segment, mcp__benevox__update_segment, mcp__benevox__retire_segment, mcp__benevox__set_beachhead, mcp__benevox__add_segment_item, mcp__benevox__update_segment_item, mcp__benevox__retire_segment_item, mcp__benevox__add_value_proposition, mcp__benevox__update_value_proposition, mcp__benevox__retire_value_proposition, mcp__benevox__add_proposition_item, mcp__benevox__update_proposition_item, mcp__benevox__retire_proposition_item, mcp__benevox__add_demand_evidence, mcp__benevox__remove_demand_evidence, mcp__benevox__set_video_strategy, mcp__benevox__search_youtube_videos, mcp__benevox__get_run, mcp__benevox__list_runs, mcp__benevox__observe_run, mcp__benevox__cancel_run"
 ---
 
 # Benevox studio
@@ -50,9 +50,10 @@ every write carries its id.
 
 **`runId` on every write.** Inside a run, send the id `start_run` answered on every write until that
 run ends, so the change history records the write against Producer and that run. A write without it
-is recorded as the founder's own, so it is never left out. A write refused with "This run has ended,
-been paused or belongs to someone else. Nothing was written; start a new run." is not retried
-without a run: the calling skill opens a new one.
+is recorded as the founder's own, so it is never left out — except on `cancel_run`, the founder's
+own act (below). A write refused with "This run has ended, been paused or belongs to someone else.
+Nothing was written; start a new run." is not retried without a run: the calling skill opens a new
+one.
 
 ## Addressing
 
@@ -70,7 +71,7 @@ part in a session; the organisation may have customised it.
 | Part | Write | Fields |
 | --- | --- | --- |
 | The niche | `create_niche` (a new empty draft on the channel), `update_niche`, `delete_niche` | sources note, statement, audience, problem, method, keywords, TAM low and high viewers, TAM evidence, adjacent niches, confidence note — all optional while it is a draft |
-| A direction | `add_direction`, `update_direction`, `remove_direction`, `pick_direction` | who it serves, the problem, how it makes money, the advantage, a skill score 1–5. One direction is picked; picking another moves the mark |
+| A direction | `add_direction`, `update_direction`, `remove_direction`, `pick_direction` | name (its short title), rank (1 the best; the niche answers its directions in rank order), who it serves, the problem, how it makes money, the advantage, a skill score 1–5. Each goes in its own field — never a name or a rank inside who it serves. Re-rank one by sending it whole with its new rank. One direction is picked; picking another moves the mark |
 | A customer segment | `add_segment`, `update_segment`, `retire_segment`, `set_beachhead` | name, description, market type (`MassMarket`, `NicheMarket`, `Segmented`, `Diversified`, `MultiSidedPlatform`), status. One segment is the beachhead; setting another moves the badge |
 | A segment item | `add_segment_item`, `update_segment_item`, `retire_segment_item` | kind `Job`, `Pain` or `Gain`; text; a job's kind (`Functional`, `Social`, `Emotional`, `Supporting`); a rating `VeryLow` to `VeryHigh` — a job's importance, a pain's severity, a gain's relevance; status |
 | A value proposition | `add_value_proposition`, `update_value_proposition`, `retire_value_proposition` | the segment it is for, the statement, status |
@@ -121,7 +122,15 @@ until Studio is updated. Tell the person what it said; nothing reached the libra
 Opening and ending runs is `benevox-agent`'s and `benevox-niche`'s. From here: `get_run` reads one
 run whole — its events, its checkpoints, how many procedures of how many are done — and `list_runs`
 lists a channel's runs by status with the headline each left. `observe_run` records a line on the
-run you are in. `cancel_run` is the founder's call, not yours.
+run you are in.
+
+`cancel_run` stops a running or paused run for good, and it is the founder's act, never yours.
+Call it only when the founder asked for that run to be cancelled — find it with `list_runs` and
+confirm its headline — with the run as `targetRunId` and **no `runId`**, even inside a run: the call
+is then the founder's own. Never in a routine's run, where no founder's word arrives. Sent with a
+`runId`, Studio refuses it with "Only a person cancels a run. End or pause the run you are in, and
+cancel a run only on the founder's word, with no run: that call is the founder's own act." The
+founder can also cancel on Studio → Runs — Cancel, on a running or paused run.
 
 ## Make current is the founder's
 
@@ -148,6 +157,9 @@ the recovery says rather than resending.
   - "A pain reliever points at a pain of its proposition's segment."
   - "A gain creator points at a gain of its proposition's segment."
   - "Pick at least one value proposition and one segment."
+- "Only a person cancels a run. End or pause the run you are in, and cancel a run only on the
+  founder's word, with no run: that call is the founder's own act." — `cancel_run` was sent with a
+  `runId`. Nothing was cancelled; send it again with no `runId` only if the founder asked for it.
 - `UPSTREAM_UNAVAILABLE` — Studio or YouTube could not answer; the recovery says when to retry.
 - `FORBIDDEN` `read-only` — the organisation's subscription is read-only; say so and stop.
 

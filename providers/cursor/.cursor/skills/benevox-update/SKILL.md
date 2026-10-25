@@ -1,6 +1,6 @@
 ---
-name: benevox-update
-description: Moves the installed Benevox plugin to the version published on the public mirror, and reports what changed. Use when asked to update, upgrade or refresh Benevox, the Benevox plugin or the Benevox skills, when a Benevox tool is missing or behaves unlike its documentation, or when the tools the server reports disagree with what the skills describe.
+name: "benevox-update"
+description: "Update the plugin — moves the installed Benevox plugin to the version published on the public mirror, and reports what changed. Use when asked to update, upgrade or refresh Benevox, the Benevox plugin or the Benevox skills, when a Benevox tool is missing or behaves unlike its documentation, or when the tools the server reports disagree with what the skills describe."
 ---
 
 # Updating Benevox

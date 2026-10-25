@@ -1,8 +1,8 @@
 ---
-name: benevox
-description: The front door to Benevox Studio and the connection under every other Benevox skill. Invoked with nothing, it signs in, picks the channel, boots the Producer agent, says where the channel stands and what happened last, proposes the one thing that should happen next, and offers everything else the plugin can do — Pick a niche first among them. Use when the person types the Benevox command alone, asks "where do we stand", "what's next", "what can you do", or for a menu; when a Benevox tool refuses a call; or when connecting a harness to the Benevox server.
-argument-hint: [nothing — the menu] or [what to do]
-allowed-tools: mcp__benevox__server_info, mcp__benevox__list_channels, mcp__benevox__get_channel, mcp__benevox__get_niche, mcp__benevox__list_agents, mcp__benevox__boot_agent, mcp__benevox__list_runs, mcp__benevox__ads_health, mcp__benevox__growth_health, mcp__benevox__publishing_health, mcp__benevox__seo_health, mcp__benevox__studio_health
+name: "benevox"
+description: "The front door to Benevox Studio and the connection under every other Benevox skill. Invoked with nothing, it signs in, picks the channel, boots the Producer agent, says where the channel stands and what happened last, proposes the one thing that should happen next, and offers everything else the plugin can do — Pick a niche first among them. Use when the person types the Benevox command alone, asks \"where do we stand\", \"what's next\", \"what can you do\", or for a menu; when a Benevox tool refuses a call; or when connecting a harness to the Benevox server."
+argument-hint: "[nothing — the menu] or [what to do]"
+allowed-tools: "mcp__benevox__server_info, mcp__benevox__list_channels, mcp__benevox__get_channel, mcp__benevox__get_niche, mcp__benevox__list_agents, mcp__benevox__boot_agent, mcp__benevox__list_runs, mcp__benevox__ads_health, mcp__benevox__growth_health, mcp__benevox__publishing_health, mcp__benevox__seo_health, mcp__benevox__studio_health"
 ---
 
 # Benevox

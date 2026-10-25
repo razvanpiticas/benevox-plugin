@@ -12,6 +12,14 @@ can be about.
 `supersede_insight` and `contradict_insight` take the insight and, for supersede, the newer one, and
 `runId`.
 
+`list_insights` reads a procedure's and the operation's insights with the channel's `channelId`,
+and a part description's with none: a part description belongs to the organisation, and a channel
+filter leaves its insights out.
+
+A proposal recorded inside the run files its own insight review in the founder's inbox; the
+founder answers it by applying or rejecting the proposal on Studio → Insights. Nothing else is sent
+about it.
+
 A proposal is written against the version the subject's read answered. If the founder edits the
 text before ruling, "Apply" refuses the proposal as moved and says so; the next pass writes a new one
 against the new text. Do not pre-empt it.

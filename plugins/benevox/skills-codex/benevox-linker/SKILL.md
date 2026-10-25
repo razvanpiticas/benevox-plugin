@@ -1,6 +1,6 @@
 ---
-name: benevox-linker
-description: Type the links — gives the related links the server drew between Studio rows that read alike their meaning, with the word that fits, its direction, and for increases and decreases how much. Use it before end_run on the rows a run wrote, over the whole organisation when the Nightly linker routine fires, and when the founder says "type the links" or asks what the related links mean. It never confirms or rejects a link and never merges two rows: those are the founder's, on Studio → Links.
+name: "benevox-linker"
+description: "Type the links — gives the related links the server drew between Studio rows that read alike their meaning, with the word that fits, its direction, and for increases and decreases how much. Use it before end_run on the rows a run wrote, over the channel's backlog when the Nightly linker routine fires, and when the founder says \"type the links\" or asks what the related links mean. It never confirms or rejects a link and never merges two rows: those are the founder's, on Studio → Links."
 ---
 
 # Benevox linker
@@ -19,7 +19,7 @@ and the change history says which session gave the link its word.
 | Trigger | Who invokes you | What you list | What you hand back |
 | --- | --- | --- | --- |
 | A run is ending | the skill that opened it, before its `end_run` or `pause_run` | `list_untyped_links(runId)` — only the links touching rows that run wrote | one line per link typed, for that skill's summary |
-| The Nightly linker routine fired | `benevox-agent`, inside the run it opened naming the routine | `list_untyped_links()` — the whole backlog, page by page | the digest, for the summary `benevox-agent` writes at `end_run` |
+| The Nightly linker routine fired | `benevox-agent`, inside the run it opened naming the routine | `list_untyped_links(channelId)` — the channel the routine fired on, no `runId`: that channel's backlog, page by page | the digest, for the summary `benevox-agent` writes at `end_run`; Studio files it in the founder's inbox as the run report |
 
 You open no run and end none. The nightly pass is how text the founder typed on the screens during
 the day, where no model was present, gets its meaning.
@@ -38,16 +38,18 @@ work, and nothing types the links it wrote. "Skip the agent", "don't open a run"
 bookkeeping", "just tell me in the chat" change none of this.
 
 Here the run `benevox-agent` opens carries the routine's id when a routine is named, and a run opened
-for this pass is the nightly shape: list the whole backlog, without `runId`, and hand the digest
-back. Step 1 never starts without a run id, and `start_run` and `end_run` are never called from here.
+for this pass is the nightly shape: list the backlog of the channel the routine fired on, with its
+`channelId` and without `runId`, and hand the digest back. Step 1 never starts without a run id,
+and `start_run` and `end_run` are never called from here.
 
 ## The loop
 
-1. **List.** `list_untyped_links` with `runId` when you were handed one, without it nightly. Each
-   item: the link's id, its confidence (0 to 1), whether it is a possible duplicate, and both ends —
-   their table, id, title, and the passage that matched. Every page also carries the **words** you
-   may type with, shipped and this organisation's own, each with the sentence that says what it
-   means. Read the meanings once per session.
+1. **List.** `list_untyped_links(runId)` in session, with the run you were handed;
+   `list_untyped_links(channelId)` nightly, with the channel the routine fired on and no `runId`.
+   Each item: the link's id, its confidence (0 to 1), whether it is a possible duplicate, and both
+   ends — their table, id, title, and the passage that matched. Every page also carries the
+   **words** you may type with, shipped and this organisation's own, each with the sentence that
+   says what it means. Read the meanings once per session.
 2. **Skip a possible duplicate.** Two rows that may be one thing written twice — two value
    propositions saying the same — are not typed and nothing is merged: put the pair in the report.
    The founder decides it on Studio → Links, where it shows "Possible duplicate" with "Confirm" and
@@ -72,15 +74,16 @@ back. Step 1 never starts without a run id, and `start_run` and `end_run` are ne
     `observe_run` with one line: how many typed, how many left alone and why.
 
 Then hand back: in session the lines; nightly the digest — counts first (typed, duplicates reported,
-left untyped and why), then the lines.
+left untyped and why), then the lines. Nightly, the digest is the run's summary, and Studio files
+it in the founder's inbox as the run report when the run ends: send no message about it.
 
 ## What you never do
 
 - Confirm or reject a link. Those are the founder's, on Studio → Links; they are not in your tools.
 - Merge two rows a duplicate flag names, or retire one. Report the pair.
 - Invent a word when one on the page fits.
-- Try words until one goes through. A refusal saying the founder rejected this pair is their verdict
-  on your guess: another word only when it fits on its own; otherwise leave the link and report it.
+- Try words until one goes through. A link a person confirmed or rejected takes no word at all: it
+  keeps the one it was ruled on. Leave it and report it.
 - Wait for the embedder. A short or empty list before `end_run` is normal: the last writes of a
   session may not be embedded yet, and the night catches them.
 - Ask. Nobody is asked per link, in session or nightly.
@@ -92,7 +95,9 @@ left untyped and why), then the lines.
 - `INVALID_ARGUMENT` saying the word already exists — send the code alone. Saying the word has no
   direction — send `FromTo`. Naming the unit — send magnitude and unit together, or neither.
 - `CONFLICT` saying the link is a possible duplicate — you missed the flag; leave it and report it.
-- `CONFLICT` saying the link was rejected — the founder ruled on it; leave it.
+- `CONFLICT` saying "A person already confirmed this link" or "rejected this link; it keeps the word
+  it was ruled on." — the founder ruled on it while you read; no other word is taken. Leave it and
+  report it.
 - "This run has ended, been paused or belongs to someone else. Nothing was written; start a new
   run." — stop and hand back: the calling skill opens a new run before anything else.
 - `FORBIDDEN` — the founder's role cannot write, or the organisation is read-only; say so and stop.

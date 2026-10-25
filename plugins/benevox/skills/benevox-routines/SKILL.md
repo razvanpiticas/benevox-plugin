@@ -1,8 +1,8 @@
 ---
-name: benevox-routines
-description: Routines: switch on, run now. The routines menu — what a Benevox channel has scheduled, switching a routine on or off in both places it lives (the Studio row and this machine's scheduler), rescheduling one, and running one now by hand. Use when the founder asks what runs on its own, wants the Nightly distiller or the Nightly linker switched on or off for a channel, wants a routine's time or zone changed, or wants a routine run right now.
-argument-hint: [switch on | switch off | reschedule | run now] [routine name] [channel name]
-allowed-tools: mcp__benevox__list_channels, mcp__benevox__get_channel, mcp__benevox__list_agents, mcp__benevox__list_routines, mcp__benevox__get_routine, mcp__benevox__update_routine, mcp__benevox__enable_routine, mcp__benevox__disable_routine, Bash(node *), Bash(npx *)
+name: "benevox-routines"
+description: "Routines: switch on, run now. The routines menu — what a Benevox channel has scheduled, switching a routine on or off in both places it lives (the Studio row and this machine's scheduler), rescheduling one, and running one now by hand. Use when the founder asks what runs on its own, wants the Nightly distiller or the Nightly linker switched on or off for a channel, wants a routine's time or zone changed, or wants a routine run right now."
+argument-hint: "[switch on | switch off | reschedule | run now] [routine name] [channel name]"
+allowed-tools: "mcp__benevox__list_channels, mcp__benevox__get_channel, mcp__benevox__list_agents, mcp__benevox__list_routines, mcp__benevox__get_routine, mcp__benevox__update_routine, mcp__benevox__enable_routine, mcp__benevox__disable_routine, Bash(node *), Bash(npx *)"
 ---
 
 # Benevox routines
@@ -27,7 +27,8 @@ work, and nothing types the links it wrote. "Skip the agent", "don't open a run"
 bookkeeping", "just tell me in the chat" change none of this.
 
 Here `benevox-agent` boots Producer and hands you the session. The routine tools themselves take no
-`runId`, so each call stays the founder's: a schedule is set by somebody who has read it.
+`runId`, so each call stays the founder's: a schedule is set by somebody who has read it. Studio
+refuses every routine change made inside a run.
 
 ## The menu
 
@@ -131,9 +132,13 @@ founder goes through `benevox-inbox`; the run is closed with a headline and a su
 
 Hand back to `benevox-agent` with the agent, the channel and the routine's name. It reads the routine
 with `get_routine`, opens a run naming the routine, and follows the instructions. This is how "run
-the linker" and "run the distiller" are done by hand, and how a routine is tested before it is
-scheduled. **A routine run by hand is still the routine's run**, and its `start_run` carries the
-routine's id — switched on or not.
+the linker" and "run the distiller" are done by hand, and how a routine is tested once it is
+switched on (step 5 above). **A routine run by hand is still the routine's run**, and its
+`start_run` carries the routine's id.
+
+Only a routine that is on runs. Studio refuses the run of one that is off: "Routine '<name>' is off,
+so nothing should fire it. Turn it on, or remove the task the machine still has for it." Offer to
+switch it on — both places, read first — which ends with running it once.
 
 ## Reading a refusal
 
@@ -142,8 +147,12 @@ routine's id — switched on or not.
 - `INVALID_ARGUMENT` naming the schedule or the zone — the line does not parse, or the zone is not
   one Studio knows; show the founder the field.
 - `CONFLICT` naming the routine's version — somebody edited it since you read it; read it again.
-- A refusal saying only a person sets a schedule — the call was made inside a run. It never should
-  be: this skill carries no `runId`.
+- "Only a person changes a routine. Call the routine tools with no run: they are the founder's own
+  act." — the call carried a run. Nothing changed. Send it again with no `runId`: the change is the
+  founder's, made on their word, never the run's.
+- "Routine '<name>' is off, so nothing should fire it. Turn it on, or remove the task the machine
+  still has for it." — a run was opened for a routine that is off. Switch it on, or remove the
+  entry this machine still has for it.
 - `schedule add` refusing the zone, the line or a harness not on the PATH — the message says what to
   change.
 

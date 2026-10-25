@@ -62,8 +62,8 @@ is refused: use the shipped word.
 A possible duplicate: the two rows may be one thing written twice. Not typed, not merged, not
 retired — reported, with both titles, so the founder rules on Studio → Links.
 
-## A rejected pair
+## A ruled link
 
-A refusal saying the founder rejected this pair is their verdict on that guess. Type the pair with a
-different word only when that word passes the test on its own; never as a way past the refusal.
-Otherwise leave it and report "rejected by the founder; no other word fits".
+A refusal saying a person already confirmed or rejected this link means the founder ruled on it
+after the page was listed. It keeps the word it was ruled on, and no other word is taken: leave it
+and report "ruled on by the founder". A rejected pair is never drawn again.
